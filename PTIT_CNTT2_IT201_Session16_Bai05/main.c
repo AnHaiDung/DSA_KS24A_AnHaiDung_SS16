@@ -37,11 +37,31 @@ void enQueue(Queue *queue, int data) {
     }
 }
 
-int front(Queue *queue) {
+int deQueue(Queue *queue) {
     if (isQueueEmpty(queue)) {
         return -1;
     }
-    return queue->front->data;
+    Node *temp = queue->front;
+    int data = temp->data;
+    queue->front = temp->next;
+    if (queue->front == NULL) {
+        queue->rear = NULL;
+    }
+    free(temp);
+    return data;
+}
+
+void printQueue(Queue *queue) {
+    if (isQueueEmpty(queue)) {
+        printf("hang doi rong\n");
+        return;
+    }else {
+        Node *temp = queue->front;
+        while (temp != NULL) {
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+    }
 }
 
 int main(void) {
@@ -56,11 +76,11 @@ int main(void) {
         scanf("%d", &value);
         enQueue(&queue, value);
     }
-    int result = front(&queue);
+    int result = deQueue(&queue);
     if (result == -1) {
         printf("hang doi rongg\n");
     }else {
-        printf("%d\n", result);
+        printQueue(&queue);
     }
     return 0;
 }
